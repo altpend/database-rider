@@ -40,7 +40,8 @@ public abstract class AbstractLeakHunter implements LeakHunter {
 
     @Override
     public int measureConnectionsBeforeExecution() {
-        return openConnectionsBeforeExecution = openConnections();
+        int openConnectionsBeforeExecution = openConnections();
+        return openConnectionsBeforeExecution;
     }
 
     @Override

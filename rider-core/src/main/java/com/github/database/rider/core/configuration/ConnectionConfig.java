@@ -12,6 +12,13 @@ public class ConnectionConfig {
     private String user;
     private String password;
 
+    public ConnectionConfig() {
+        this.driver = "";
+        this.url = "";
+        this.user = "";
+        this.password = "";
+    }
+
     public String getDriver() {
         return driver;
     }

@@ -124,28 +124,40 @@ public class DataSetConfig {
     }
 
     public DataSetConfig from(DataSet dataSet) {
-        if(dataSet != null){
-            return name(dataSet.value()).strategy(dataSet.strategy()).
-                    useSequenceFiltering(dataSet.useSequenceFiltering()).
-                    tableOrdering(dataSet.tableOrdering()).
-                    disableConstraints(dataSet.disableConstraints()).
-                    fillIdentityColumns(dataSet.fillIdentityColumns()).
-                    executorId(dataSet.executorId()).
-                    executeStatementsBefore(dataSet.executeStatementsBefore()).
-                    executeScripsBefore(dataSet.executeScriptsBefore()).
-                    cleanBefore(dataSet.cleanBefore()).
-                    cleanAfter(dataSet.cleanAfter()).
-                    transactional(dataSet.transactional()).
-                    executeStatementsAfter(dataSet.executeStatementsAfter()).
-                    executeScriptsAfter(dataSet.executeScriptsAfter()).
-                    skipCleaningFor(dataSet.skipCleaningFor()).
-                    replacers(dataSet.replacers()).
-                    datasetProvider(dataSet.provider());
-        } else{
+        if(dataSet == null){
             throw new RuntimeException("Cannot create DataSetConfig from Null DataSet");
+
+        } else{
+            return setConfig(dataSet).setExecutorBefore(dataSet).setCleaning(dataSet).setExecutorAfter(dataSet);
+
         }
 
     }
+
+    private DataSetConfig setConfig(DataSet dataSet) {
+        return name(dataSet.value()).strategy(dataSet.strategy()).
+                useSequenceFiltering(dataSet.useSequenceFiltering()).tableOrdering(dataSet.tableOrdering()).
+                disableConstraints(dataSet.disableConstraints()).fillIdentityColumns(dataSet.fillIdentityColumns());
+    }
+
+    private DataSetConfig setExecutorBefore(DataSet dataSet) {
+        return executorId(dataSet.executorId()).executeStatementsBefore(dataSet.executeStatementsBefore()).
+                executeScripsBefore(dataSet.executeScriptsBefore());
+    }
+
+    private DataSetConfig setCleaning(DataSet dataSet) {
+        return cleanBefore(dataSet.cleanBefore()).cleanAfter(dataSet.cleanAfter()).transactional(dataSet.transactional());
+    }
+
+    private DataSetConfig setExecutorAfter(DataSet dataSet) {
+        return executeStatementsAfter(dataSet.executeStatementsAfter()).
+                executeScriptsAfter(dataSet.executeScriptsAfter()).
+                skipCleaningFor(dataSet.skipCleaningFor()).
+                replacers(dataSet.replacers()).
+                datasetProvider(dataSet.provider());
+    }
+
+
 
     public DataSetConfig datasetProvider(Class<? extends DataSetProvider> providerClass) {
         if (providerClass != null && !providerClass.isInterface()) {

@@ -703,19 +703,19 @@ public class DataSetExecutorImpl implements DataSetExecutor {
      * Place to handle database difference
      */
     private List<String> splitScript(String script) {
-        String separator = ";";
-        String[] commentPrefixes = new String[]{"#", "--"};
-        String blockCommentStartDelimiter = "/*";
-        String blockCommentEndDelimiter = "*/";
-
-        return splitScript(script, separator, commentPrefixes, blockCommentStartDelimiter, blockCommentEndDelimiter);
+        return splitScript(new Split(script));
     }
 
     /**
      * Code below Modified from Spring org.springframework.jdbc.datasource.init.ScriptUtils
      * Support multiple commentPrefixes
      */
-    private List<String> splitScript(String script, String separator, String[] commentPrefixes, String blockCommentStartDelimiter, String blockCommentEndDelimiter) {
+    private List<String> splitScript(Split split) {
+        String script = split.getScript();
+        String separator = split.getSeparator();
+        String[] commentPrefixes = split.getCommentPrefixes();
+        String blockCommentStartDelimiter = split.getBlockCommentStartDelimiter();
+        String blockCommentEndDelimiter = split.getBlockCommentEndDelimiter();
         List<String> statements = new LinkedList<>();
         StringBuilder sb = new StringBuilder();
         boolean inSingleQuote = false;
